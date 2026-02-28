@@ -103,6 +103,36 @@ document.getElementById("result").innerHTML+=html;
 }
 
 loadQuiz();
+</script>const API_URL = "https://script.google.com/macros/s/AKfycbwdaKINigs8GUDizVVL9KdyhA3rBWK_oxLsMztp-QaqoVzlimTbx8XAhVfgeW1iTEDW/exec";
+
+function kirimNilai(nama, sekolah, skor) {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      nama: nama,
+      sekolah: sekolah,
+      skor: skor
+    })
+  })
+  .then(response => response.text())
+  .then(data => console.log("Tersimpan:", data))
+  .catch(error => console.error("Error:", error));
+}
 </script>
-</body>
+</body>const API_URL = "https://script.google.com/macros/s/AKfycbwdaKINigs8GUDizVVL9KdyhA3rBWK_oxLsMztp-QaqoVzlimTbx8XAhVfgeW1iTEDW/exec";
+
+function kirimNilai(nama, sekolah, skor) {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      nama: nama,
+      sekolah: sekolah,
+      skor: skor
+    })
+  })
+  .then(response => response.text())
+  .then(data => console.log("Tersimpan:", data))
+  .catch(error => console.error("Error:", error));
+}
+</script>
 </html>
