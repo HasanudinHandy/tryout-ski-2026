@@ -40,6 +40,24 @@ submitQuiz();
 },1000);
 }
 
+<script>
+let timerInterval;
+let time = 60 * 60; // 60 menit
+
+function startTimer(){
+timerInterval = setInterval(()=>{
+let minutes = Math.floor(time/60);
+let seconds = time % 60;
+document.getElementById("timer").innerText =
+minutes + ":" + (seconds<10?"0":"") + seconds;
+time--;
+if(time < 0){
+clearInterval(timerInterval);
+submitQuiz();
+}
+},1000);
+}
+
 const questions = [];
 
 for(let i=1;i<=70;i++){
@@ -52,110 +70,27 @@ answer:Math.floor(Math.random()*5)
 
 questions.sort(()=>Math.random()-0.5);
 
-function loadQuiz(){
-const quizDiv=document.getElementById("quiz");
-questions.forEach((q,index)=>{
-let div=document.createElement("div");
-div.classList.add("question");
-div.innerHTML="<p>"+(index+1)+". "+q.question+"</p>";
-q.options.forEach((opt,i)=>{
-div.innerHTML+=
-`<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
-});
-quizDiv.appendChild(div);
-});
-startTimer();
-}
-
 function submitQuiz(){
+
 clearInterval(timerInterval);
-let score=0;
-questions.forEach((q,index)=>{
-let selected=document.querySelector(`input[name="q${index}"]:checked`);
-if(selected && parseInt(selected.value)===q.answer){
-score++;
+
+let skor = 0;
+
+const selected = document.querySelectorAll("input[type=radio]:checked");
+
+selected.forEach((item,index)=>{
+if(parseInt(item.value) === questions[index].answer){
+skor++;
 }
 });
-let finalScore=Math.round((score/70)*100);
-document.getElementById("result").innerHTML=
-"<h3>Nilai Anda: "+finalScore+"</h3>";
-saveRanking(finalScore);
-}
 
-function saveRanking(score){
-let nama=document.getElementById("nama").value;
-if(!nama){alert("Isi nama dulu!");return;}
-let ranking=JSON.parse(localStorage.getItem("ranking"))||[];
-ranking.push({nama:nama,score:score});
-ranking.sort((a,b)=>b.score-a.score);
-localStorage.setItem("ranking",JSON.stringify(ranking));
-showRanking();
-}
+skor = Math.round((skor/70)*100);
 
-function showRanking(){
-let ranking=JSON.parse(localStorage.getItem("ranking"))||[];
-let html="<h3>Ranking</h3><ol>";
-ranking.forEach(r=>{
-html+="<li>"+r.nama+" - "+r.score+"</li>";
-});
-html+="</ol>";
-document.getElementById("result").innerHTML+=html;
-}
+let nama = prompt("Masukkan Nama Anda:");
+let sekolah = prompt("Masukkan Asal Sekolah:");
 
-loadQuiz();
-</script>const API_URL = "https://script.google.com/macros/s/AKfycbwdaKINigs8GUDizVVL9KdyhA3rBWK_oxLsMztp-QaqoVzlimTbx8XAhVfgeW1iTEDW/exec";
+alert("Nilai Anda: " + skor);
 
-function kirimNilai(nama, sekolah, skor) {
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      nama: nama,
-      sekolah: sekolah,
-      skor: skor
-    })
-  })
-  .then(response => response.text())
-  .then(data => console.log("Tersimpan:", data))
-  .catch(error => console.error("Error:", error));
-}
-</script><script>
-function submitQuiz(){
-
-  clearInterval(timerInterval);
-
-  let skor = 0;
-  const selected = document.querySelectorAll("input[type=radio]:checked");
-
-  selected.forEach((item, index)=>{
-    if(parseInt(item.value) === questions[index].answer){
-      skor++;
-    }
-  });
-
-  skor = Math.round((skor/70)*100);
-
-  let nama = prompt("Masukkan Nama Anda:");
-  let sekolah = prompt("Masukkan Asal Sekolah:");
-
-  alert("Nilai Anda: " + skor);
-
-  kirimNilai(nama, sekolah, skor);
+kirimNilai(nama,sekolah,skor);
 }
 </script>
-</body>const API_URL = "https://script.google.com/macros/s/AKfycbwdaKINigs8GUDizVVL9KdyhA3rBWK_oxLsMztp-QaqoVzlimTbx8XAhVfgeW1iTEDW/exec";
-
-function kirimNilai(nama, sekolah, skor) {
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      nama: nama,
-      sekolah: sekolah,
-      skor: skor
-    })
-  })
-  .then(response => response.text())
-  .then(data => console.log("Tersimpan:", data))
-  .catch(error => console.error("Error:", error));
-}
-</script>
-</html>
