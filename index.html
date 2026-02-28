@@ -118,6 +118,29 @@ function kirimNilai(nama, sekolah, skor) {
   .then(data => console.log("Tersimpan:", data))
   .catch(error => console.error("Error:", error));
 }
+</script><script>
+function submitQuiz(){
+
+  clearInterval(timerInterval);
+
+  let skor = 0;
+  const selected = document.querySelectorAll("input[type=radio]:checked");
+
+  selected.forEach((item, index)=>{
+    if(parseInt(item.value) === questions[index].answer){
+      skor++;
+    }
+  });
+
+  skor = Math.round((skor/70)*100);
+
+  let nama = prompt("Masukkan Nama Anda:");
+  let sekolah = prompt("Masukkan Asal Sekolah:");
+
+  alert("Nilai Anda: " + skor);
+
+  kirimNilai(nama, sekolah, skor);
+}
 </script>
 </body>const API_URL = "https://script.google.com/macros/s/AKfycbwdaKINigs8GUDizVVL9KdyhA3rBWK_oxLsMztp-QaqoVzlimTbx8XAhVfgeW1iTEDW/exec";
 
